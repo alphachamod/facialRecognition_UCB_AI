@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ad347f2-f443-415e-b850-34db81f688c4" name="Changes" comment="V1.2 Face Data and the captured face images will be saved upon confirmation under the user's name Main added">
+    <list default="true" id="6ad347f2-f443-415e-b850-34db81f688c4" name="Changes" comment="V1.3 Prompted are initiated only if confirmation_done and similarity &lt; threshold and len(faces) &gt; 0:">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,7 +96,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712945355775</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="V1.3 Prompted are initiated only if confirmation_done and similarity &lt; threshold and len(faces) &gt; 0:">
+      <option name="closed" value="true" />
+      <created>1712945823177</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1712945823177</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -114,6 +123,7 @@
     <MESSAGE value="Instead of Capturing the whole frame for training capture only the face area for training new visitors V1.1" />
     <MESSAGE value="Face Data and the captured face images will be saved upon confirmation under the user's name V1.2" />
     <MESSAGE value="V1.2 Face Data and the captured face images will be saved upon confirmation under the user's name Main added" />
-    <option name="LAST_COMMIT_MESSAGE" value="V1.2 Face Data and the captured face images will be saved upon confirmation under the user's name Main added" />
+    <MESSAGE value="V1.3 Prompted are initiated only if confirmation_done and similarity &lt; threshold and len(faces) &gt; 0:" />
+    <option name="LAST_COMMIT_MESSAGE" value="V1.3 Prompted are initiated only if confirmation_done and similarity &lt; threshold and len(faces) &gt; 0:" />
   </component>
 </project>
