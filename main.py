@@ -83,22 +83,21 @@ while True:
             if confirmation:
                 confirmation_done = True  # Set confirmation flag to True after asking once
 
-        # If confirmation is done, prompt for name and proceed with capturing and saving
-        if confirmation_done and not name_entered:
-            # Prompt user to enter name using GUI input dialog
-            root = tk.Tk()
-            root.withdraw()
-            user_name = simpledialog.askstring("Input", "Enter your name:")
+        # If confirmation is done, and face is unknown, prompt for name and proceed with capturing and saving
+        if confirmation_done and similarity < threshold and len(faces) > 0:
+            if not name_entered:
+                # Prompt user to enter name using GUI input dialog
+                root = tk.Tk()
+                root.withdraw()
+                user_name = simpledialog.askstring("Input", "Enter your name:")
 
-            # Create subfolder with user's name
-            subfolder_name = datetime.now().strftime("%Y%m%d_%H%M%S") + "_" + user_name
-            subfolder_path = os.path.join(captured_faces_folder, subfolder_name)
-            os.makedirs(subfolder_path)
+                # Create subfolder with user's name
+                subfolder_name = datetime.now().strftime("%Y%m%d_%H%M%S") + "_" + user_name
+                subfolder_path = os.path.join(captured_faces_folder, subfolder_name)
+                os.makedirs(subfolder_path)
 
-            name_entered = True  # Set name entered flag to True after asking once
+                name_entered = True  # Set name entered flag to True after asking once
 
-        # If name entered, proceed with capturing and saving
-        if name_entered:
             # Save the captured face image with a unique filename inside the user's folder
             image_filename = os.path.join(subfolder_path, f"face_{capture_count}.jpg")
             cv2.imwrite(image_filename, face_roi)

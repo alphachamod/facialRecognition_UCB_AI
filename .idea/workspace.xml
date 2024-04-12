@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ad347f2-f443-415e-b850-34db81f688c4" name="Changes" comment="Face Data and the captured face images will be saved upon confirmation under the user's name V1.2" />
+    <list default="true" id="6ad347f2-f443-415e-b850-34db81f688c4" name="Changes" comment="V1.2 Face Data and the captured face images will be saved upon confirmation under the user's name Main added">
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,7 +87,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712945278194</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="V1.2 Face Data and the captured face images will be saved upon confirmation under the user's name Main added">
+      <option name="closed" value="true" />
+      <created>1712945355775</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1712945355775</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -103,6 +113,7 @@
     <MESSAGE value="Project Initiated V1.0" />
     <MESSAGE value="Instead of Capturing the whole frame for training capture only the face area for training new visitors V1.1" />
     <MESSAGE value="Face Data and the captured face images will be saved upon confirmation under the user's name V1.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Face Data and the captured face images will be saved upon confirmation under the user's name V1.2" />
+    <MESSAGE value="V1.2 Face Data and the captured face images will be saved upon confirmation under the user's name Main added" />
+    <option name="LAST_COMMIT_MESSAGE" value="V1.2 Face Data and the captured face images will be saved upon confirmation under the user's name Main added" />
   </component>
 </project>
