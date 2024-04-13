@@ -1,13 +1,11 @@
-import cv2
-import os
-import numpy as np
-from datetime import datetime
-from deepface import DeepFace
-import tkinter as tk
-from tkinter import messagebox, simpledialog
 import csv
+import os
+from datetime import datetime
+from tkinter import messagebox, simpledialog
 
-
+import cv2
+import numpy as np
+from deepface import DeepFace
 
 # Create a folder to save captured face images
 captured_faces_folder = "captured_faces"
@@ -31,6 +29,7 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 # Initialize a dictionary to store the first and last seen time for each matched face
 matched_faces_log = {}
 
+
 # Function to update the log for matched faces
 def update_log(name):
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -39,6 +38,7 @@ def update_log(name):
     else:
         matched_faces_log[name] = [current_time, current_time]  # First seen and last seen time
 
+
 # Function to convert string to datetime
 def str_to_datetime(date_str):
     try:
@@ -46,6 +46,7 @@ def str_to_datetime(date_str):
     except ValueError:
         # If the first format fails, try the second format
         return datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+
 
 # Function to save the log to a CSV file
 def save_log(filename):
@@ -60,7 +61,6 @@ def save_log(filename):
             writer.writerow([name, first_seen, last_seen, duration_hours])
 
 
-
 # Function to detect faces and draw rectangles around them
 def detect_faces_and_draw_rectangles(image, names):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -68,7 +68,7 @@ def detect_faces_and_draw_rectangles(image, names):
 
     for (x, y, w, h) in faces:
         # Extract the region of interest (ROI) corresponding to the detected face
-        face_roi = image[y:y+h, x:x+w]
+        face_roi = image[y:y + h, x:x + w]
 
         # Use face recognition model to extract features from the face ROI
         webcam_features = DeepFace.represent(face_roi, enforce_detection=False)
@@ -90,14 +90,15 @@ def detect_faces_and_draw_rectangles(image, names):
         threshold = 0.6
         if max_similarity > threshold:
             update_log(matched_name)
-            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            cv2.putText(image, f"{matched_name} ({max_similarity:.2f}%)", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.putText(image, f"{matched_name} ({max_similarity:.2f}%)", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                        (0, 255, 0), 2)
             log_filename = datetime.now().strftime("%Y%m%d") + "_log.csv"
             save_log(log_filename)
 
         else:
-            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
-            cv2.putText(image, "Unknown", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+            cv2.putText(image, "Unknown", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
 
             # Prompt a confirmation window if the face is unknown
             confirmation = messagebox.askyesno("Confirmation", "Unknown face detected. Add as a new person?")
@@ -113,8 +114,24 @@ def detect_faces_and_draw_rectangles(image, names):
                     # Save the captured face images with a unique filename
                     capture_count = 0
                     while capture_count < 60:
-                        cv2.imwrite(os.path.join(subfolder_path, f"face_{capture_count}.jpg"), face_roi)
-                        capture_count += 1
+                        # Capture a new frame
+                        ret, frame = cap.read()
+                        if not ret:
+                            print("Error: Failed to capture frame.")
+                            break
+
+                        # Detect faces in the frame
+                        faces = face_cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+                        # Check if any faces are detected
+                        if len(faces) > 0:
+                            # Extract the region of interest (ROI) corresponding to the first detected face
+                            (x, y, w, h) = faces[0]
+                            face_roi = frame[y:y + h, x:x + w]
+
+                            # Save the captured face image with a unique filename
+                            cv2.imwrite(os.path.join(subfolder_path, f"face_{capture_count}.jpg"), face_roi)
+                            capture_count += 1
 
                     # Save the features of captured face images to a numpy file
                     captured_faces_features = []
@@ -132,6 +149,7 @@ def detect_faces_and_draw_rectangles(image, names):
                     messagebox.showinfo("Success", "Face captured and saved successfully.")
 
     return image
+
 
 # Create a VideoCapture object to capture video from the webcam (0 is usually the default webcam)
 cap = cv2.VideoCapture(0)
