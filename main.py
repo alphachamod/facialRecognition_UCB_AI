@@ -54,13 +54,14 @@ def detect_faces_and_draw_rectangles(image, names):
         threshold = 0.6
         if max_similarity > threshold:
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            cv2.putText(image, matched_name, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            cv2.putText(image, f"{matched_name} ({max_similarity:.2f}%)", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
         else:
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
             cv2.putText(image, "Unknown", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
 
             # Prompt a confirmation window if the face is unknown
-            confirmation = messagebox.askyesno("Confirmation", "Unknown face detected. Capture and save?")
+            confirmation = messagebox.askyesno("Confirmation", "Unknown face detected. Add as a new person?")
             if confirmation:
                 # Prompt for name input
                 user_name = simpledialog.askstring("Name", "Please enter your name:")
@@ -72,7 +73,7 @@ def detect_faces_and_draw_rectangles(image, names):
 
                     # Save the captured face images with a unique filename
                     capture_count = 0
-                    while capture_count < 50:
+                    while capture_count < 100:
                         cv2.imwrite(os.path.join(subfolder_path, f"face_{capture_count}.jpg"), face_roi)
                         capture_count += 1
 
@@ -113,7 +114,7 @@ while True:
     frame_with_rectangles = detect_faces_and_draw_rectangles(frame, saved_faces_features.keys())
 
     # Display the live stream frame with detected faces and names
-    cv2.imshow("Live Stream with Face Recognition", frame_with_rectangles)
+    cv2.imshow("Visitor Screening System UCB Assignment", frame_with_rectangles)
 
     # Check for the 'q' key to quit the loop
     if cv2.waitKey(1) & 0xFF == ord('q'):
