@@ -5,6 +5,9 @@ from datetime import datetime
 from deepface import DeepFace
 import tkinter as tk
 from tkinter import messagebox, simpledialog
+import csv
+
+
 
 # Create a folder to save captured face images
 captured_faces_folder = "captured_faces"
@@ -24,6 +27,39 @@ for folder_name in os.listdir(captured_faces_folder):
 
 # Load the pre-trained cascade classifier for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+# Initialize a dictionary to store the first and last seen time for each matched face
+matched_faces_log = {}
+
+# Function to update the log for matched faces
+def update_log(name):
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if name in matched_faces_log:
+        matched_faces_log[name][1] = current_time  # Update last seen time
+    else:
+        matched_faces_log[name] = [current_time, current_time]  # First seen and last seen time
+
+# Function to convert string to datetime
+def str_to_datetime(date_str):
+    try:
+        return datetime.strptime(date_str, "%Y%m%d_%H%M%S")
+    except ValueError:
+        # If the first format fails, try the second format
+        return datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+
+# Function to save the log to a CSV file
+def save_log(filename):
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Name", "First Seen Time", "Last Seen Time", "Time Duration (hours)"])
+        for name, (first_seen, last_seen) in matched_faces_log.items():
+            first_seen_dt = str_to_datetime(first_seen)
+            last_seen_dt = str_to_datetime(last_seen)
+            # Calculate duration in hours with four decimal places
+            duration_hours = round((last_seen_dt - first_seen_dt).total_seconds() / 3600, 4)
+            writer.writerow([name, first_seen, last_seen, duration_hours])
+
+
 
 # Function to detect faces and draw rectangles around them
 def detect_faces_and_draw_rectangles(image, names):
@@ -53,8 +89,11 @@ def detect_faces_and_draw_rectangles(image, names):
         # Draw rectangle around the face and display the name
         threshold = 0.6
         if max_similarity > threshold:
+            update_log(matched_name)
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
             cv2.putText(image, f"{matched_name} ({max_similarity:.2f}%)", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            log_filename = datetime.now().strftime("%Y%m%d") + "_log.csv"
+            save_log(log_filename)
 
         else:
             cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
@@ -73,7 +112,7 @@ def detect_faces_and_draw_rectangles(image, names):
 
                     # Save the captured face images with a unique filename
                     capture_count = 0
-                    while capture_count < 100:
+                    while capture_count < 60:
                         cv2.imwrite(os.path.join(subfolder_path, f"face_{capture_count}.jpg"), face_roi)
                         capture_count += 1
 
