@@ -6,6 +6,12 @@ from tkinter import messagebox, simpledialog
 import cv2
 import numpy as np
 from deepface import DeepFace
+import tensorflow as tf
+
+# Set TensorFlow GPU options
+gpu_options = tf.compat.v1.GPUOptions(allow_growth=True)
+config = tf.compat.v1.ConfigProto(gpu_options=gpu_options)
+tf.compat.v1.Session(config=config)
 
 # Create a folder to save captured face images
 captured_faces_folder = "captured_faces"
